@@ -31,8 +31,11 @@ SYSROOT?=/home/wmt/work_trimui
 * https://github.com/trimui/toolchain_sdk_smartpro/releases/download/20231018/SDK_usr_tg5040_a133p.tgz  
 * Run 'make clean && make MIYOO=1'  
 
-## Debug  
+## How to debug by bottom USB-C (not the top one) adb connection (not good method, but available and show log)         
 * adb push onscripter /mnt/SDCARD/Apps/ons/  
 * adb shell  
 $ cd /mnt/SDCARD/Apps/ons/ && LD_LIBRARY_PATH=/usr/trimui/lib ./onscripter  
 
+## How to launch from main menu   
+* See vendor/mnt_SDCARD_Apps_ons_v2.zip  
+* Unpack to /mnt/SDCARD/Apps/ons/ (for Windows, put to SDCARD:\Apps\ons)    
