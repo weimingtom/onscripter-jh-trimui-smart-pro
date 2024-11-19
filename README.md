@@ -1,5 +1,5 @@
 ﻿# onscripter-jh-trimui-smart-pro
-[WIP] My ONScripter-jh TRIMUI SMART PRO port
+[WIP] My ONScripter-jh TRIMUI SMART PRO and TRIMUI BRICK port
 
 ## Original ONScripter-Jh readme
 ```
