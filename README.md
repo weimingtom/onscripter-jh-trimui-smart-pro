@@ -39,3 +39,9 @@ $ cd /mnt/SDCARD/Apps/ons/ && LD_LIBRARY_PATH=/usr/trimui/lib ./onscripter
 ## How to launch from main menu   
 * See vendor/mnt_SDCARD_Apps_ons_v2.zip  
 * Unpack to /mnt/SDCARD/Apps/ons/ (for Windows, put to SDCARD:\Apps\ons)    
+
+## About no dpad input event and warpmouse (when press dpad down, context menu item no highlight) bugs    
+* https://github.com/weimingtom/onscripter-jh-trimui-smart-pro/commit/d0a7830f9d68d1553114f01a49104a6c4635c6b5  
+* see ONScripter.cpp, SDL_INIT_GAMECONTROLLER  
+* see ONScripter_event.cpp, case SDL_CONTROLLERBUTTONDOWN  
+* see ONScripter.cpp, void ONScripter::warpMouse(int x, int y)  
