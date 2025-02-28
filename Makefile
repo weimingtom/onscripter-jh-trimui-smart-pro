@@ -112,6 +112,8 @@ endif
 
 #CFLAGS = -g -Wall -pipe -c $(INCS) $(DEFS)
 CFLAGS = -std=c++11 -O3 -Wall -fomit-frame-pointer -pipe -c $(INCS) $(DEFS) $(EXT_FLAGS)
+#CFLAGS = -std=c++11 -O0 -g3 -Wall -fomit-frame-pointer -pipe -c $(INCS) $(DEFS) $(EXT_FLAGS)
+#b ONScripter_event.cpp:1044
 
 # for GCC on PowerPC specfied
 #CC = powerpc-unknown-linux-gnu-g++

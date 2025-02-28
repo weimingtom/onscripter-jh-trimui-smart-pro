@@ -118,6 +118,73 @@ if (IMG_Init(IMG_INIT_JPG | IMG_INIT_PNG | IMG_INIT_TIF | IMG_INIT_WEBP) < 0) {
 #endif
     if(SDL_InitSubSystem( SDL_INIT_JOYSTICK ) == 0 && SDL_JoystickOpen(0) != NULL)
         utils::printInfo("Initialize JOYSTICK\n");
+	
+#if defined(MIYOO)	
+//copy from https://github.com/weimingtom/kirikiroid2-miyoo-a30/blob/master/cocos/platform/desktop/CCGLViewImpl-desktop.cpp
+//some code is in ONScripter_event.cpp
+	if (SDL_InitSubSystem/*SDL_Init*/(/*SDL_INIT_AUDIO|SDL_INIT_EVENTS | SDL_INIT_JOYSTICK | */SDL_INIT_GAMECONTROLLER ) < 0) {
+        SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Couldn't initialize SDL: %s\n", SDL_GetError());
+        exit(-1);
+    }
+	
+//------testgamecontroller.c
+    int i;
+    int nController = 0;
+    int retcode = 0;
+    char guid[64];
+    SDL_GameController *gamecontroller;
+    /* Print information about the controller */
+    for (i = 0; i < SDL_NumJoysticks(); ++i) {
+        const char *name;
+        const char *description;
+
+        SDL_JoystickGetGUIDString(SDL_JoystickGetDeviceGUID(i),
+                                  guid, sizeof (guid));
+
+        if ( SDL_IsGameController(i) )
+        {
+            nController++;
+            name = SDL_GameControllerNameForIndex(i);
+            description = "Controller";
+        } else {
+            name = SDL_JoystickNameForIndex(i);
+            description = "Joystick";
+        }
+        SDL_Log("%s %d: %s (guid %s, VID 0x%.4x, PID 0x%.4x)\n",
+            description, i, name ? name : "Unknown", guid,
+            SDL_JoystickGetDeviceVendor(i), SDL_JoystickGetDeviceProduct(i));
+    }
+    SDL_Log("There are %d game controller(s) attached (%d joystick(s))\n", nController, SDL_NumJoysticks());
+
+
+char *argv1 = "0";
+ if (argv1) {
+        SDL_bool reportederror = SDL_FALSE;
+        SDL_bool keepGoing = SDL_TRUE;
+        SDL_Event event;
+        int device = atoi(argv1);
+        if (device >= SDL_NumJoysticks()) {
+            SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "%i is an invalid joystick index.\n", device);
+            retcode = 1;
+        } else {
+            SDL_JoystickGetGUIDString(SDL_JoystickGetDeviceGUID(device),
+                                      guid, sizeof (guid));
+            SDL_Log("Attempting to open device %i, guid %s\n", device, guid);
+            gamecontroller = SDL_GameControllerOpen(device);
+
+            if (gamecontroller != NULL) {
+                SDL_assert(SDL_GameControllerFromInstanceID(SDL_JoystickInstanceID(SDL_GameControllerGetJoystick(gamecontroller))) == gamecontroller);
+            }
+
+        }
+    }
+
+//getchar();
+
+
+//------testgamecontroller.c
+#endif //defined(MIYOO)
+
 #endif
 
     /* ---------------------------------------- */
@@ -907,7 +974,16 @@ void ONScripter::mouseOverCheck( int x, int y )
 }
 
 void ONScripter::warpMouse(int x, int y) {
+#if defined(MIYOO)
+SDL_Event mevent = {0};
+mevent.type = SDL_MOUSEMOTION;
+mevent.motion.state = 0;
+mevent.motion.x = x;
+mevent.motion.y = y;
+SDL_PushEvent(&mevent);
+#else
     SDL_WarpMouseInWindow(NULL, x, y);
+#endif
 }
 
 void ONScripter::setFullScreen(bool fullscreen) {

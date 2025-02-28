@@ -1451,7 +1451,7 @@ SDL_Log("%s\n", "SDL_FINGERUP");
 #if !defined(ANDROID) && !defined(IOS) && !defined(WINRT)
           case SDL_MOUSEMOTION:
 #if defined(MIYOO) && 0
-SDL_Log("%s\n", "SDL_MOUSEMOTION"); //not used for miyoo a30
+SDL_Log("%s, %d, %d, %d\n", "SDL_MOUSEMOTION", event.motion.state, event.motion.x, event.motion.y); //not used for miyoo a30
 #endif
             if (mouseMoveEvent( &event.motion )) return;
             if (btndown_flag){
@@ -1550,6 +1550,255 @@ SDL_Log("%s\n", "SDL_JOYAXISMOTION");
               }
               break;
           }
+
+		  
+		  
+		  
+		  
+		  
+		  
+		  
+		  
+		  
+		  
+		  
+		  
+		  
+		  
+		  
+		  
+		  
+		  
+		  
+		  
+		  
+		  
+		  
+		  
+		  
+		  
+		  
+		  
+
+#if defined(MIYOO)
+//copy from https://github.com/weimingtom/kirikiroid2-miyoo-a30/blob/master/cocos/platform/desktop/CCGLViewImpl-desktop.cpp
+//some init code is in ONScripter.cpp
+	case SDL_CONTROLLERBUTTONDOWN:
+	case SDL_CONTROLLERBUTTONUP: {
+
+#define JOYSTICK_BUTTON_DPAD_DOWN__ 6
+#define JOYSTICK_BUTTON_DPAD_LEFT__ 7
+#define JOYSTICK_BUTTON_DPAD_UP__ 8 
+#define JOYSTICK_BUTTON_DPAD_RIGHT__ 9
+int c2jbutton = -1;
+int c2kbutton = -1;
+
+
+#if 1//defined(USE_DEBUG_INPUT)
+SDL_Log("%s, %s, %d\n", 
+(event.type == SDL_CONTROLLERBUTTONDOWN) ? 
+"SDL_CONTROLLERBUTTONDOWN" : 
+"SDL_CONTROLLERBUTTONUP", 
+(event.cbutton.state == SDL_PRESSED) ? 
+"SDL_PRESSED" : 
+"SDL_RELEASED", 
+event.cbutton.button);
+#endif				
+		switch (event.cbutton.state) {
+			case SDL_PRESSED:
+#if 1						
+				//TVPPostInputEvent(new tTVPOnKeyDownInputEvent(TJSNativeInstance, sdl_gamecontrollerbutton_to_vk_key(event.cbutton.button, &isQuit, s, 0, TJSNativeInstance), s));
+#endif
+
+//trimui smart pro:
+//UP:11
+//DOWN:12
+//LEFT:13
+//RIGHT:14
+//A:1(joy 1, only up)
+//B:0(joy 0)
+//X:3(joy 3)
+//Y:2(joy 2)
+//L1:9(Joy 4)
+//L2:10(Joy 5)
+//Start:6(Joy 7)
+//Select:4(Joy 6)
+//Menu:5(Joy 8)
+//joy: joyaxismotion
+//key: Power(102, VolumeUp(128), VolumeDown(129)
+//===
+//plan:
+//A=return=kag3.Return
+//B=space=kag3.Space
+//X=fast=kag3.F(#'F')
+//Y=menu=kag3.ESC=message history
+//
+//Select=????
+//Start=auto=kag3.A
+//Menu=exit=???kage3.exit
+//
+//L1=left?=?kag3.B=back?
+//R1=right?
+//
+//?=kage3.S=save?
+//?=kage3.L=load?
+
+if (event.cbutton.button == SDL_CONTROLLER_BUTTON_DPAD_UP)
+{
+        c2jbutton = JOYSTICK_BUTTON_DPAD_UP__;
+	c2kbutton = SDLK_UP;
+printf("emulate SDLK_UP\n");
+}
+if (event.cbutton.button == SDL_CONTROLLER_BUTTON_DPAD_DOWN)
+{
+        c2jbutton = JOYSTICK_BUTTON_DPAD_DOWN__;
+	c2kbutton = SDLK_DOWN;
+printf("emulate SDLK_DOWN\n");
+}
+if (event.cbutton.button == SDL_CONTROLLER_BUTTON_DPAD_LEFT)
+{
+        c2jbutton = JOYSTICK_BUTTON_DPAD_LEFT__;
+	c2kbutton = SDLK_LEFT;
+printf("emulate SDLK_LEFT\n");
+}
+if (event.cbutton.button == SDL_CONTROLLER_BUTTON_DPAD_RIGHT)
+{
+        c2jbutton = JOYSTICK_BUTTON_DPAD_RIGHT__;
+	c2kbutton = SDLK_RIGHT;
+printf("emulate SDLK_RIGHT\n");
+}
+if (c2kbutton >=0) //c2jbutton >= 0)
+{
+#if 0
+	event.key.type = SDL_KEYDOWN;
+	event.key.keysym.sym = c2kbutton;//transJoystickButton(c2jbutton);
+	if (event.key.keysym.sym != SDLK_UNKNOWN) {
+		event.key.keysym.sym = transKey(event.key.keysym.sym);
+		ret = keyDownEvent( &event.key );
+		if ( btndown_flag )
+			ret |= keyPressEvent( &event.key );
+		if (ret) return;
+	}
+#else
+//SDL_Event mevent = {0};
+//mevent.type = SDL_MOUSEMOTION;
+//mevent.motion.x = screen_device_width / 2;
+//mevent.motion.y = screen_device_height / 2;
+//SDL_PushEvent(&mevent);
+//SDL_WarpMouseInWindow(window, screen_device_width / 2, screen_device_height / 2);
+
+SDL_Event ev2 = {0};
+ev2.type = SDL_KEYDOWN;
+ev2.key.state = SDL_PRESSED;
+ev2.key.keysym.scancode = (SDL_Scancode)c2kbutton;
+ev2.key.keysym.sym = (SDL_Scancode)c2kbutton;
+SDL_PushEvent(&ev2);
+#endif
+}
+				break;
+				
+			case SDL_RELEASED:
+if (event.cbutton.button == SDL_CONTROLLER_BUTTON_DPAD_UP)
+{
+        c2jbutton = JOYSTICK_BUTTON_DPAD_UP__;
+	c2kbutton = SDLK_UP;
+printf("emulate SDLK_UP\n");
+}
+if (event.cbutton.button == SDL_CONTROLLER_BUTTON_DPAD_DOWN)
+{
+        c2jbutton = JOYSTICK_BUTTON_DPAD_DOWN__;
+	c2kbutton = SDLK_DOWN;
+printf("emulate SDLK_DOWN\n");
+}
+if (event.cbutton.button == SDL_CONTROLLER_BUTTON_DPAD_LEFT)
+{
+        c2jbutton = JOYSTICK_BUTTON_DPAD_LEFT__;
+	c2kbutton = SDLK_LEFT;
+printf("emulate SDLK_LEFT\n");
+}
+if (event.cbutton.button == SDL_CONTROLLER_BUTTON_DPAD_RIGHT)
+{
+        c2jbutton = JOYSTICK_BUTTON_DPAD_RIGHT__;
+	c2kbutton = SDLK_RIGHT;
+printf("emulate SDLK_RIGHT\n");
+}
+if (c2kbutton >=0) //c2jbutton >= 0)
+{
+#if 0
+	event.key.type = SDL_KEYUP;
+	event.key.keysym.sym = c2kbutton;//transJoystickButton(c2jbutton);
+	if (event.key.keysym.sym != SDLK_UNKNOWN) {
+		event.key.keysym.sym = transKey(event.key.keysym.sym);
+		keyUpEvent( &event.key );
+		ret = keyPressEvent( &event.key );
+		if (ret) return;
+	}
+#else
+//SDL_Event mevent = {0};
+//mevent.type = SDL_MOUSEMOTION;
+//mevent.motion.x = screen_device_width / 2;
+//mevent.motion.y = screen_device_height / 2;
+//SDL_PushEvent(&mevent);
+//SDL_WarpMouseInWindow(window, screen_device_width / 2, screen_device_height / 2);
+
+SDL_Event ev2 = {0};
+ev2.type = SDL_KEYUP;
+ev2.key.state = SDL_RELEASED;
+ev2.key.keysym.scancode = (SDL_Scancode)c2kbutton;
+ev2.key.keysym.sym = (SDL_Scancode)c2kbutton;
+SDL_PushEvent(&ev2);
+#endif
+}
+				break;
+		}
+	}
+	break;
+#endif //defined(MIYOO)	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
           case ONS_TIMER_EVENT:
             timerEvent(false);
