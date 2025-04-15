@@ -47,5 +47,5 @@ $ cd /mnt/SDCARD/Apps/ons/ && LD_LIBRARY_PATH=/usr/trimui/lib ./onscripter
 * see ONScripter.cpp, void ONScripter::warpMouse(int x, int y)  
 
 ## No sound Bug  
-* (only trim brick tested) If use cn test suite, press L1 fast forward, it will no sound (but retroarch no this problem)  
+* (only trimui brick tested) If use cn test suite, press L1 fast forward, it will no sound (but retroarch no this problem)  
   
