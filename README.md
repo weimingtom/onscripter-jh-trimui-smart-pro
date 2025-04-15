@@ -45,3 +45,7 @@ $ cd /mnt/SDCARD/Apps/ons/ && LD_LIBRARY_PATH=/usr/trimui/lib ./onscripter
 * see ONScripter.cpp, SDL_INIT_GAMECONTROLLER  
 * see ONScripter_event.cpp, case SDL_CONTROLLERBUTTONDOWN  
 * see ONScripter.cpp, void ONScripter::warpMouse(int x, int y)  
+
+## No sound Bug  
+* If use cn test suite, press L1 fast forward, it will no sound (but retroarch no this problem)  
+  
